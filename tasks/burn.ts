@@ -1,0 +1,13 @@
+import { task } from "hardhat/config"
+import { utils } from "./utils"
+import { ContractTransaction as tx} from 'ethers'
+
+const u = new utils()
+
+export default task("burn", "Burn tokens")
+    .addParam("address", "Account address")
+    .addParam("amount", "Amount tokens")
+    .setAction(async (taskArgs, hre) => {
+        const erc = await u.getContract(hre)
+        await erc.burn(taskArgs.address, u.toWei(taskArgs.amount)).then((result:tx) => u.printHash(result))
+})
